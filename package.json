@@ -3,12 +3,18 @@
 	"version": "1.0.0",
 	"description": "",
 	"main": "index.js",
-	"scripts": {},
+	"scripts": {
+		"tests": "playwright test",
+		"tests:ui": "playwright test --ui"
+	},
 	"keywords": [],
 	"author": "Pavlo Kuravskyi",
 	"license": "ISC",
 	"devDependencies": {
+		"@faker-js/faker": "^8.4.1",
 		"@playwright/test": "^1.42.1",
-		"@types/node": "^20.11.27"
+		"@types/node": "^20.11.27",
+		"axios": "^1.6.7",
+		"dotenv": "^16.4.5"
 	}
 }

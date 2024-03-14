@@ -1,0 +1,13 @@
+{
+	"compilerOptions": {
+		"noImplicitAny": true,
+		"noImplicitThis": true,
+		"strictFunctionTypes": true,
+		"strictBindCallApply": true,
+		"alwaysStrict": true,
+		"esModuleInterop": true,
+		"target": "ESNext",
+		"module": "NodeNext",
+		"moduleResolution": "NodeNext"
+	}
+}
