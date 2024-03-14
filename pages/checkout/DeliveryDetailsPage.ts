@@ -75,11 +75,11 @@ export class DeliveryDetailsPage extends BaseCheckoutPage {
 	}
 
 	async clickSaveAddress(): Promise<void> {
-		await this.saveAddressButton.click();
+		await this.waitToClick(this.saveAddressButton);
 	}
 
 	async clickContinueToPayment(): Promise<void> {
-		await this.continueToPaymentButton.click();
+		await this.waitToClick(this.continueToPaymentButton);
 	}
 
 	async verifyNewlySavedAddress(): Promise<void> {

@@ -2,14 +2,13 @@ import { Page, Locator, expect } from '@playwright/test';
 
 export class BasePage {
 	readonly page: Page;
-	readonly baseUrl: string;
+	readonly baseUrl: string = 'http://localhost:2221/';
 	readonly hamburgerMenuButton: Locator;
 	readonly checkoutButton: Locator;
 	readonly basketCounterTextField: Locator;
 
 	constructor(page: Page) {
 		this.page = page;
-		this.baseUrl = 'http://localhost:2221/';
 		this.hamburgerMenuButton = page.locator('.burger-button');
 		this.checkoutButton = page.getByRole('link', { name: 'Checkout' });
 		this.basketCounterTextField = page.locator(

@@ -22,11 +22,13 @@ export class BasketPage extends BasePage {
 		}
 
 		const cheapestPriceIdx = artsPrices.indexOf(Math.min(...artsPrices));
-		await this.basketCardRemoveItemButtons.nth(cheapestPriceIdx).click();
+		await this.waitToClick(
+			this.basketCardRemoveItemButtons.nth(cheapestPriceIdx)
+		);
 		await this.page.waitForTimeout(500);
 	}
 
 	async clickContinueToCheckout(): Promise<void> {
-		await this.continueToCheckoutButton.click();
+		await this.waitToClick(this.continueToCheckoutButton);
 	}
 }

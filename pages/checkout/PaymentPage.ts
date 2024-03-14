@@ -45,7 +45,7 @@ export class PaymentPage extends BaseCheckoutPage {
 	}
 
 	async clickSubmitDiscount(): Promise<void> {
-		await this.submitDiscountButton.click();
+		await this.waitToClick(this.submitDiscountButton);
 	}
 
 	async inputCreditCardOwner(): Promise<void> {
@@ -74,7 +74,7 @@ export class PaymentPage extends BaseCheckoutPage {
 	}
 
 	async clickPay(): Promise<void> {
-		await this.payButton.click();
+		await this.waitToClick(this.payButton);
 	}
 
 	async verifyDiscountPrice(): Promise<void> {

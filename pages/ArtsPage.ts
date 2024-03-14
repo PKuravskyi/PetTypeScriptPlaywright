@@ -21,7 +21,7 @@ export class ArtsPage extends BasePage {
 		const basketBtn = this.page.locator(
 			`//*[text()="${artName}"]/..//button/div`
 		);
-		await basketBtn.click();
+		await this.waitToClick(basketBtn);
 		await expect(basketBtn).toHaveText(`${option} Basket`);
 	}
 

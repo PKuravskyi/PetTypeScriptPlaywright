@@ -27,6 +27,6 @@ export class SignUpPage extends BasePage {
 	}
 
 	async clickRegister(): Promise<void> {
-		await this.registerButton.click();
+		await this.waitToClick(this.registerButton);
 	}
 }
