@@ -1,3 +1,6 @@
 node_modules/
-playwright-report/
 /.env
+
+# reporters
+playwright-report/
+test-results/
