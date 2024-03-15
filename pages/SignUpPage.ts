@@ -1,4 +1,4 @@
-import { Page, Locator, expect } from '@playwright/test';
+import { Page, Locator } from '@playwright/test';
 import { faker } from '@faker-js/faker';
 import { BasePage } from './BasePage';
 
