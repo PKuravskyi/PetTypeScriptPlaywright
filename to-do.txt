@@ -7,3 +7,5 @@
 7. Add snapshots matching tests
 8. Add scripts to run different test suites & helper scripts for running tests
 9. Add logger
+10. Add ESlint
+11. Add test coverage
