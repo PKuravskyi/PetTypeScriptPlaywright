@@ -1,0 +1,25 @@
+name: Playwrigth Tests
+on: [push]
+jobs:
+  test:
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.42.1-jammy
+      env:
+        ADMIN_USERNAME: ${{ secrets.ADMIN_USERNAME }}
+        ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Start Shopping Store App
+        run: |
+          chmod +x './ShoppingStoreApp/shopping-store-linux-amd64'
+            ./ShoppingStoreApp/shopping-store-linux-amd64 &
+
+      - name: Run tests
+        run: npm run tests
