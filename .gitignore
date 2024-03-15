@@ -4,3 +4,4 @@ node_modules/
 # reporters
 playwright-report/
 test-results/
+allure-results/

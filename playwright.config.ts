@@ -29,6 +29,8 @@ export default defineConfig({
 		/* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
 		trace: 'on-first-retry',
 	},
+	/* Global Setup to run before all tests */
+	globalSetup: `./support/global-setup`,
 
 	/* Configure projects for major browsers */
 	projects: [
