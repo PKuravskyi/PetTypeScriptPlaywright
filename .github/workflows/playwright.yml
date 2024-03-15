@@ -20,7 +20,7 @@ jobs:
         run: |
           chmod +x './ShoppingStoreApp/shopping-store-linux-amd64'
             ./ShoppingStoreApp/shopping-store-linux-amd64 &
-          npm run tests
+          npm run test
       - uses: actions/upload-artifact@v4
         if: always()
         with:

@@ -4,8 +4,9 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"tests": "playwright test",
-		"tests:ui": "playwright test --ui",
+		"test": "playwright test",
+		"test:single": "playwright test ./tests/ui/my_account.spec.ts:6 --project=chromium",
+		"test:ui": "playwright test --ui",
 		"allureReport": "allure serve -h localhost"
 	},
 	"keywords": [],
