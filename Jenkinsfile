@@ -52,7 +52,7 @@ pipeline {
 		stage('Run tests') {
       steps {
 				script {
-					sh "playwright test --workers=${params.WORKERS}"
+					sh "npx playwright test --workers=${params.WORKERS}"
 				}
 			}
     }
