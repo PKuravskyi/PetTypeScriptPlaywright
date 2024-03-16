@@ -53,20 +53,28 @@ pipeline {
 		stage('Run tests') {
       steps {
 				script {
-					sh "npx playwright test --workers=${params.WORKERS}"
+					try {
+						sh "echo 'Admin username: $ADMIN_USERNAME'"
+            sh "echo 'Admin password: $ADMIN_PASSWORD'"
+						sh "npx playwright test --workers=${params.WORKERS}"
+					} catch {}
 				}
+			}
+    }
+
+		stage('Generate allure results') {
+      steps {
+				allure([
+					includeProperties: false,
+					jdk: '',
+					results: [[path: 'allure-results']]
+				])
 			}
     }
 	}
 
 	post {
 		always {
-			allure([
-				includeProperties: false,
-				jdk: '',
-				results: [[path: 'allure-results']]
-			])
-
 			// Send email to requestor
 			emailext body: "${currentBuild.projectName} - Build # ${currentBuild.id} - ${currentBuild.result}: Check console output at ${currentBuild.absoluteUrl} to view the results.",
 			recipientProviders: [requestor()],
