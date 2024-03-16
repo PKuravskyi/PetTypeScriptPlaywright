@@ -57,20 +57,21 @@ pipeline {
 				}
 			}
     }
-
-    stage('Generate allure report') {
-      steps {
-				allure([
-					includeProperties: false,
-					jdk: '/opt/java/openjdk',
-					results: [[path: 'allure-results']]
-				])
-      }
-    }
 	}
 
 	post {
 		always {
+			stage('Generate allure report') {
+				steps {
+					allure([
+						includeProperties: false,
+						jdk: '',
+						results: [[path: 'allure-results']]
+					])
+				}
+    	}
+
+			// Send email to requestor
 			emailext body: "${currentBuild.projectName} - Build # ${currentBuild.id} - ${currentBuild.result}: Check console output at ${currentBuild.absoluteUrl} to view the results.",
 			recipientProviders: [requestor()],
 			subject: "${currentBuild.projectName} - Build # ${currentBuild.id} - ${currentBuild.result}!"
