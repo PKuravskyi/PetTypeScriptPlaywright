@@ -1,5 +1,7 @@
 #!groovy
 
+List workers = ['5', '4', '3', '2', '1']
+
 pipeline {
 	agent any
 
@@ -10,12 +12,23 @@ pipeline {
 		timeout(time: 24, unit: 'HOURS')
 	}
 
+	parameters {
+		gitParameter branchFilter: 'origin/(.*)', defaultValue: 'main', name: 'BRANCH', type: 'PT_BRANCH'
+		choice(name: 'WORKERS', choices: workers, description: 'Number of playwright workers. How many tests will be executed in parallel.')
+	}
+
 	environment {
-    ADMIN_USERNAME = ''
-    ADMIN_PASSWORD = ''
+    ADMIN_USERNAME = credentials('admin-username')
+    ADMIN_PASSWORD = credentials('admin-password')
   }
 
 	stages {
+		stage('Clone repository') {
+			steps {
+        git branch: "${params.BRANCH}", url: 'git@github.com:PKuravskyi/PetTypeScriptPlaywright.git'
+			}
+		}
+
 		stage('Install dependencies') {
 			steps {
 					sh '''
@@ -38,12 +51,10 @@ pipeline {
 
 		stage('Run tests') {
       steps {
-				withCredentials([usernamePassword(credentialsId: 'admin-credentials', usernameVariable: 'ADMIN_USERNAME', passwordVariable: 'ADMIN_PASSWORD')]) {
-        	script {
-						sh 'npm run test'
-					}
+				script {
+					sh "playwright test --workers=${params.WORKERS}"
 				}
-      }
+			}
     }
 
     stage('Generate allure report') {
@@ -55,5 +66,13 @@ pipeline {
 				])
       }
     }
+	}
+
+	post {
+		always {
+			emailext body: "${currentBuild.projectName} - Build # ${currentBuild.id} - ${currentBuild.result}: Check console output at ${currentBuild.absoluteUrl} to view the results.",
+			recipientProviders: [requestor()],
+			subject: "${currentBuild.projectName} - Build # ${currentBuild.id} - ${currentBuild.result}!"
+		}
 	}
 }
