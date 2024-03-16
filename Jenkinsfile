@@ -77,9 +77,9 @@ pipeline {
 	post {
 		always {
 			// Send email to requestor
-			emailext body: "${currentBuild.projectName} - Build # ${currentBuild.id} - ${currentBuild.result}: Check console output at ${currentBuild.absoluteUrl} to view the results.",
-			recipientProviders: [requestor()],
-			subject: "${currentBuild.projectName} - Build # ${currentBuild.id} - ${currentBuild.result}!"
+			emailext(recipientProviders: [requestor()],
+			subject: "${currentBuild.projectName} - Build # ${currentBuild.id} - ${currentBuild.result}!",
+			body: "${currentBuild.projectName} - Build # ${currentBuild.id} - ${currentBuild.result}: Check console output at ${currentBuild.absoluteUrl} to view the results.")
 		}
 	}
 }
