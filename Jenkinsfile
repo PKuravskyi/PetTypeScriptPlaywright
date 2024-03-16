@@ -18,26 +18,34 @@ pipeline {
   }
 
 	parameters {
-    gitParameter
-						branchFilter: 'origin/(.*)',
-            defaultValue: 'main',
-            name: 'GIT_BRANCH',
-            type: 'PT_BRANCH',
-            useRepository: 'https://github.com/PKuravskyi/PetTypeScriptPlaywright.git'
   }
 
 	stages {
+		stage('Install dependencies') {
+			steps {
+					sh 'npm ci'
+			}
+    }
+
+		stage('Start Shopping Store App') {
+			steps {
+				script {
+					sh '''
+						chmod +x './ShoppingStoreApp/shopping-store-linux-amd64'
+						./ShoppingStoreApp/shopping-store-linux-amd64 &
+					'''
+				}
+			}
+		}
+
 		stage('Run tests') {
       steps {
 				withCredentials([usernamePassword(credentialsId: 'admin-credentials', usernameVariable: 'ADMIN_USERNAME', passwordVariable: 'ADMIN_PASSWORD')]) {
-				sh 'npm ci'
-        sh '''
-					chmod +x './ShoppingStoreApp/shopping-store-linux-amd64'
-					./ShoppingStoreApp/shopping-store-linux-amd64 &
-					npm run test
-				'''
+        	script {
+						sh 'npm run test'
+					}
 				}
       }
     }
   }
-}	
+}
