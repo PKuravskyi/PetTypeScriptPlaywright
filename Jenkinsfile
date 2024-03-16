@@ -17,9 +17,6 @@ pipeline {
     ADMIN_PASSWORD = ''
   }
 
-	parameters {
-  }
-
 	stages {
 		stage('Install dependencies') {
 			steps {
