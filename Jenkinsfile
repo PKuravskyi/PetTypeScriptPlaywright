@@ -23,7 +23,6 @@ pipeline {
 		stage('Install dependencies') {
 			steps {
 					sh 'npm ci'
-					sh 'ls -R'
 					sh 'java -version'
 			}
     }
