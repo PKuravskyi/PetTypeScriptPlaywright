@@ -18,8 +18,10 @@ pipeline {
 	stages {
 		stage('Install dependencies') {
 			steps {
-					sh 'npm ci'
-					sh 'java -version'
+					sh '''
+					npm ci
+					npx playwright install --with-deps
+					'''
 			}
     }
 
