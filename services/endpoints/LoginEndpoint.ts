@@ -16,6 +16,7 @@ export class LoginEndpoint extends BaseClientAPI {
 			username: process.env.ADMIN_USERNAME,
 			password: process.env.ADMIN_PASSWORD,
 		};
+		console.log(payload)
 
 		if (isWithMockedRequest) {
 			await this.page.route('**/api/user**', async route => {
