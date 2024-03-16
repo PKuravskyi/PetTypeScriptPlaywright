@@ -15,8 +15,6 @@ pipeline {
 	environment {
     ADMIN_USERNAME = ''
     ADMIN_PASSWORD = ''
-		JAVA_HOME = '/opt/java/openjdk'
-		PATH = "$JAVA_HOME/bin:$PATH"
   }
 
 	stages {
@@ -51,7 +49,7 @@ pipeline {
       steps {
 				allure([
 					includeProperties: false,
-					jdk: '',
+					jdk: '/opt/java/openjdk/bin/java',
 					results: [[path: 'allure-results']]
 				])
       }
