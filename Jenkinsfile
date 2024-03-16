@@ -1,22 +1,18 @@
 #!groovy
 
 pipeline {
+	agent any
+
+	tools { nodejs 'recent node' }
+
 	options {
 		buildDiscarder(logRotator(daysToKeepStr: '30', artifactDaysToKeepStr: '14'))
 		timeout(time: 24, unit: 'HOURS')
 	}
-	agent any
-	// agent { 
-	// 	docker { 
-	// 		image 'mcr.microsoft.com/playwright:next'
-	// 	} 
-	// }
 
 	environment {
     ADMIN_USERNAME = ''
     ADMIN_PASSWORD = ''
-		JAVA_HOME = '/opt/java/openjdk'
-    PATH = "$JAVA_HOME/bin:$PATH"
   }
 
 	stages {
