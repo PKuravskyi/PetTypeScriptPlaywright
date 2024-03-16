@@ -54,11 +54,10 @@ pipeline {
       steps {
 				script {
 					try {
-						sh "echo 'Admin username: $ADMIN_USERNAME'"
-            sh "echo 'Admin password: $ADMIN_PASSWORD'"
 						sh "npx playwright test --workers=${params.WORKERS}"
 					} catch (Exception e) {
 						echo "Caught exception: ${e.message}"
+						currentBuild.result = 'UNSTABLE'
 					}
 				}
 			}
