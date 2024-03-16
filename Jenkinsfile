@@ -5,12 +5,12 @@ pipeline {
 		buildDiscarder(logRotator(daysToKeepStr: '30', artifactDaysToKeepStr: '14'))
 		timeout(time: 24, unit: 'HOURS')
 	}
-
-	agent { 
-		docker { 
-			image 'mcr.microsoft.com/playwright:next' 
-		} 
-	}
+	agent any
+	// agent { 
+	// 	docker { 
+	// 		image 'mcr.microsoft.com/playwright:next'
+	// 	} 
+	// }
 
 	environment {
     ADMIN_USERNAME = ''
