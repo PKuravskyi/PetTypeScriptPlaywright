@@ -57,7 +57,9 @@ pipeline {
 						sh "echo 'Admin username: $ADMIN_USERNAME'"
             sh "echo 'Admin password: $ADMIN_PASSWORD'"
 						sh "npx playwright test --workers=${params.WORKERS}"
-					} catch {}
+					} catch (Exception e) {
+						echo "Caught exception: ${e.message}"
+					}
 				}
 			}
     }
