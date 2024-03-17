@@ -113,8 +113,8 @@ pipeline {
 					def testCommand = 'npx playwright test'
 
 					if (params.TESTS_LIST) {
-						def testsList = params.TESTS_LIST.split('\n').collect { it.trim().replace('\\', '/') }.join(' ')
-						testCommand += " tests/${testsList}"
+						def tests = params.TESTS_LIST.split('\n').collect { it.trim().replace('\\', '/') }.join(' ')
+						testCommand += " tests/${tests}"
           }
 
 					if (params.TAGS_TO_INCLUDE) {
