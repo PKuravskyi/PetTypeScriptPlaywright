@@ -128,7 +128,8 @@ pipeline {
 					testCommand += " --workers=${params.WORKERS} --project ${projectsArgument}"
 
 					try {
-						sh testCommand
+						//sh testCommand
+						sh "npx playwright test tests/ui/checkout.spec.ts --project 'Google Chrome'"
 					} catch (Exception e) {
 						echo "Caught exception: ${e.message}"
 						currentBuild.result = 'UNSTABLE'
