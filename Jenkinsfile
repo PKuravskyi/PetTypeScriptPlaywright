@@ -18,15 +18,14 @@ pipeline {
 		choice(name: 'WORKERS', choices: workers, description: 'Number of playwright workers. How many tests will be executed in parallel.')
 		extendedChoice(
 				name: 'PROJECTS',
-				defaultValue: '',
+				defaultValue: null,
 				description: 'Playwright projects (browsers) to use.',
-				multiSelectDelimiter: '',
-				quoteValue: true,
+				multiSelectDelimiter: ',',
 				saveJSONParameterToFile: false,
 				type: 'PT_CHECKBOX',
 				value: 'chromium, firefox, webkit, Microsoft Edge, Mobile Chrome, Mobile Safari',
 				visibleItemCount: 10
-		)	
+		)
 	}
 
 	environment {
