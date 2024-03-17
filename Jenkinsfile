@@ -108,7 +108,7 @@ pipeline {
 		stage('Run tests') {
       steps {
 				script {
-					dir("${env.WORKSPACE}/tests")
+					dir("${env.WORKSPACE}/tests") {
 					def selectedProjects = params.PROJECTS.split(',').collect { it.trim() }
 					def projectsArgument = selectedProjects.collect { "'${it}'" }.join(' ')
 					def testCommand = 'npx playwright test'
@@ -136,6 +136,7 @@ pipeline {
 					} catch (Exception e) {
 						echo "Caught exception: ${e.message}"
 						currentBuild.result = 'UNSTABLE'
+					}
 					}
 				}
 			}
