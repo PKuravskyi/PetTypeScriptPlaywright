@@ -56,8 +56,8 @@ pipeline {
 				Each item should begin on new line. Examples:<br>
 				<div style='color:green'>
 				ui<br>
-				ui\checkout.spec.ts<br>
-				ui\my_account.spec.ts:11<br>
+				ui\\checkout.spec.ts<br>
+				ui\\my_account.spec.ts:11<br>
 				</div>
 			''' )
 	}
