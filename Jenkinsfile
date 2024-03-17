@@ -108,32 +108,36 @@ pipeline {
 		stage('Run tests') {
       steps {
 				script {
-					
-					def selectedProjects = params.PROJECTS.split(',').collect { it.trim() }
-					def projectsArgument = selectedProjects.collect { "'${it}'" }.join(' ')
-					def testCommand = 'npx playwright test'
+					dir('tests') {
+						def selectedProjects = params.PROJECTS.split(',').collect { it.trim() }
+						def projectsArgument = selectedProjects.collect { "'${it}'" }.join(' ')
+						def testCommand = 'npx playwright test'
 
-					if (params.TESTS_LIST) {
-						def testsList = params.TESTS_LIST.split('\n').collect { it.trim() }.join(' ')
-						testCommand += " \"${testsList}\""
-          }
+						if (params.TESTS_LIST) {
+							def testsList = params.TESTS_LIST.split('\n').collect { it.trim() }.join(' ')
+							testCommand += " \"${testsList}\""
+						}
 
-					if (params.TAGS_TO_INCLUDE) {
-						testCommand += " --grep ${params.TAGS_TO_INCLUDE}"
-					}
+						if (params.TAGS_TO_INCLUDE) {
+							testCommand += " --grep ${params.TAGS_TO_INCLUDE}"
+						}
 
-					if (params.TAGS_TO_EXCLUDE) {
-						testCommand += " --grep-invert ${params.TAGS_TO_EXCLUDE}"
-					}
+						if (params.TAGS_TO_EXCLUDE) {
+							testCommand += " --grep-invert ${params.TAGS_TO_EXCLUDE}"
+						}
 
-					testCommand += " --workers=${params.WORKERS} --project ${projectsArgument}"
+						testCommand += " --workers=${params.WORKERS} --project ${projectsArgument}"
 
-					sh 'pwd'
-					try {
-						sh testCommand
-					} catch (Exception e) {
-						echo "Caught exception: ${e.message}"
-						currentBuild.result = 'UNSTABLE'
+						sh '''
+						
+						pwd
+						'''
+						try {
+							sh testCommand
+						} catch (Exception e) {
+							echo "Caught exception: ${e.message}"
+							currentBuild.result = 'UNSTABLE'
+						}
 					}
 				}
 			}
