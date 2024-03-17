@@ -80,33 +80,27 @@ pipeline {
 
 		stage('Clone repository') {
 			steps {
-				dir("${env.WORKSPACE}") {
-        	git branch: "${params.BRANCH}", url: 'https://github.com/PKuravskyi/PetTypeScriptPlaywright.git'
-				}
+        git branch: "${params.BRANCH}", url: 'https://github.com/PKuravskyi/PetTypeScriptPlaywright.git'
 			}
 		}
 
 		stage('Install dependencies') {
 			steps {
-				dir("${env.WORKSPACE}") {
 					sh '''
 					npm ci
 					npx playwright install --with-deps
 					npx playwright install chrome
 					'''
-				}
 			}
     }
 
 		stage('Start Shopping Store App') {
 			steps {
 				script {
-					dir("${env.WORKSPACE}") {
-						sh '''
-							chmod +x './ShoppingStoreApp/shopping-store-linux-amd64'
-							./ShoppingStoreApp/shopping-store-linux-amd64 &
-						'''
-					}
+					sh '''
+						chmod +x './ShoppingStoreApp/shopping-store-linux-amd64'
+						./ShoppingStoreApp/shopping-store-linux-amd64 &
+					'''
 				}
 			}
 		}
@@ -114,33 +108,34 @@ pipeline {
 		stage('Run tests') {
       steps {
 				script {
-					dir("${env.WORKSPACE}/tests") {
-						def selectedProjects = params.PROJECTS.split(',').collect { it.trim() }
-						def projectsArgument = selectedProjects.collect { "'${it}'" }.join(' ')
-						def testCommand = 'npx playwright test'
+					
+					def selectedProjects = params.PROJECTS.split(',').collect { it.trim() }
+					def projectsArgument = selectedProjects.collect { "'${it}'" }.join(' ')
+					def testCommand = 'npx playwright test'
 
-						if (params.TESTS_LIST) {
-							def testsList = params.TESTS_LIST.split('\n').collect { it.trim() }.join(' ')
-							testCommand += " \"${testsList}\""
-						}
+					if (params.TESTS_LIST) {
+						def testsList = params.TESTS_LIST.split('\n').collect { it.trim() }.join(' ')
+						testCommand += " \"${testsList}\""
+          }
 
-						if (params.TAGS_TO_INCLUDE) {
-							testCommand += " --grep ${params.TAGS_TO_INCLUDE}"
-						}
+					if (params.TAGS_TO_INCLUDE) {
+						testCommand += " --grep ${params.TAGS_TO_INCLUDE}"
+					}
 
-						if (params.TAGS_TO_EXCLUDE) {
-							testCommand += " --grep-invert ${params.TAGS_TO_EXCLUDE}"
-						}
+					if (params.TAGS_TO_EXCLUDE) {
+						testCommand += " --grep-invert ${params.TAGS_TO_EXCLUDE}"
+					}
 
-						testCommand += " --workers=${params.WORKERS} --project ${projectsArgument}"
+					testCommand += " --workers=${params.WORKERS} --project ${projectsArgument}"
 
-						sh 'pwd'
-						try {
-							sh testCommand
-						} catch (Exception e) {
-							echo "Caught exception: ${e.message}"
-							currentBuild.result = 'UNSTABLE'
-						}
+					sh '''
+					sh 'ls -l'
+					'''
+					try {
+						sh testCommand
+					} catch (Exception e) {
+						echo "Caught exception: ${e.message}"
+						currentBuild.result = 'UNSTABLE'
 					}
 				}
 			}
@@ -148,13 +143,11 @@ pipeline {
 
 		stage('Generate allure results') {
       steps {
-				dir("${env.WORKSPACE}") {
-					allure([
-						includeProperties: false,
-						jdk: '',
-						results: [[path: 'allure-results']]
-					])
-				}
+				allure([
+					includeProperties: false,
+					jdk: '',
+					results: [[path: 'allure-results']]
+				])
 			}
     }
 	}
