@@ -85,7 +85,9 @@ pipeline {
       steps {
 				script {
 					try {
-						def projectsArgument = env.SELECTED_PROJECTS.collect { "'${it}'" }.join(' ')
+						def selectedProjects = params.PROJECTS.split(',').collect { it.trim() }
+						def projectsArgument = selectedProjects.collect { "'${it}'" }.join(' ')
+
 						sh "npx playwright test --workers=${params.WORKERS} --project ${projectsArgument}"
 					} catch (Exception e) {
 						echo "Caught exception: ${e.message}"
