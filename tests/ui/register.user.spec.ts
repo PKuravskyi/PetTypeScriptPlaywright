@@ -3,7 +3,7 @@ import { test } from '../../support/env';
 test.describe(
 	'Sign up page',
 	{
-		tag: '@ui',
+		tag: ['@ui', '@smoke'],
 	},
 	() => {
 		test.beforeEach(async ({ signUpPage }) => await signUpPage.visit());
