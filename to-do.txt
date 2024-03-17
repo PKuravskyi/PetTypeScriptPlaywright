@@ -1,12 +1,11 @@
-1. Reports (Allure or similar)
-2. CI/CD integration (Jenkins or free alternatives)
-3. Accessibility tests
-4. API tests
-5. Add tags for tests
-6. Try to use Cucumber
-7. Add snapshots matching tests
-8. Add scripts to run different test suites & helper scripts for running tests
-9. Add logger
-10. Add ESlint
-11. Add test coverage
-12. Fix email sending in Jenkins
+Accessibility tests
+API tests
+Add tags for tests
+Try to use Cucumber
+Add snapshots matching tests
+Add scripts to run different test suites locally & helper scripts for running tests
+Add logger
+Add ESlint
+Add test coverage
+Fix email sending in Jenkins
+Add google chrome for playwright in docker container

@@ -40,7 +40,7 @@ pipeline {
 
 		string(
 			name: 'TAGS_TO_INCLUDE',
-			description: 'Run tests that include specific tags.\nExample: @smoke @ui',
+			description: 'Run tests that include specific tags.<br>Example: @smoke @ui',
 			trim: true
 		)
 
@@ -52,13 +52,14 @@ pipeline {
 
 		text(
 			name: 'TESTS_LIST',
-			description: '''
-				List of tests to run. You can specify folder with tests, one test file, or one specific test from suite.
-				Each item should begin on new line. Examples:
-				ui
-				ui\\checkout.spec.ts
-				ui\\my_account.spec.ts:11
-			''', )
+			description: '''List of tests to run. You can specify folder with tests, one test file, or one specific test from suite.<br>
+				Each item should begin on new line. Examples:<br>
+				<div style='color:green'>
+				ui<br>
+				ui\checkout.spec.ts<br>
+				ui\my_account.spec.ts:11<br>
+				</div>
+			''' )
 	}
 
 	environment {
