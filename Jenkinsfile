@@ -49,6 +49,16 @@ pipeline {
 			description: 'Run tests that do not include specific tags.\nExample: @wip @flaky',
 			trim: true
 		)
+
+		text(
+			name: 'TESTS_LIST',
+			description: '''
+				List of tests to run. You can specify folder with tests, one test file, or one specific test from suite.
+				Each item should begin on new line. Examples:
+				ui
+				ui\\checkout.spec.ts
+				ui\\my_account.spec.ts:11
+			''', )
 	}
 
 	environment {
@@ -97,19 +107,26 @@ pipeline {
 		stage('Run tests') {
       steps {
 				script {
+					def selectedProjects = params.PROJECTS.split(',').collect { it.trim() }
+					def projectsArgument = selectedProjects.collect { "'${it}'" }.join(' ')
+					def testCommand = 'npx playwright test'
+
+					if (params.TESTS_LIST) {
+						def testsList = params.TESTS_LIST.split('\n').collect { it.trim() }.join(' ')
+						testCommand += " ${testsList}"
+          }
+
+					if (params.TAGS_TO_INCLUDE) {
+						testCommand += " --grep ${params.TAGS_TO_INCLUDE}"
+					}
+
+					if (params.TAGS_TO_EXCLUDE) {
+						testCommand += " --grep-invert ${params.TAGS_TO_EXCLUDE}"
+					}
+
+					testCommand += " --workers=${params.WORKERS} --project ${projectsArgument}"
+
 					try {
-						def selectedProjects = params.PROJECTS.split(',').collect { it.trim() }
-						def projectsArgument = selectedProjects.collect { "'${it}'" }.join(' ')
-						def testCommand = "npx playwright test --workers=${params.WORKERS} --project ${projectsArgument}"
-
-						if (params.TAGS_TO_INCLUDE) {
-								testCommand += " --grep ${params.TAGS_TO_INCLUDE}"
-						}
-
-						if (params.TAGS_TO_EXCLUDE) {
-								testCommand += " --grep-invert ${params.TAGS_TO_EXCLUDE}"
-						}
-
 						sh testCommand
 					} catch (Exception e) {
 						echo "Caught exception: ${e.message}"
