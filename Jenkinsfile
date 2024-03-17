@@ -80,27 +80,33 @@ pipeline {
 
 		stage('Clone repository') {
 			steps {
-        git branch: "${params.BRANCH}", url: 'https://github.com/PKuravskyi/PetTypeScriptPlaywright.git'
+				dir("${env.WORKSPACE}") {
+        	git branch: "${params.BRANCH}", url: 'https://github.com/PKuravskyi/PetTypeScriptPlaywright.git'
+				}
 			}
 		}
 
 		stage('Install dependencies') {
 			steps {
+				dir("${env.WORKSPACE}") {
 					sh '''
 					npm ci
 					npx playwright install --with-deps
 					npx playwright install chrome
 					'''
+				}
 			}
     }
 
 		stage('Start Shopping Store App') {
 			steps {
 				script {
-					sh '''
-						chmod +x './ShoppingStoreApp/shopping-store-linux-amd64'
-						./ShoppingStoreApp/shopping-store-linux-amd64 &
-					'''
+					dir("${env.WORKSPACE}") {
+						sh '''
+							chmod +x './ShoppingStoreApp/shopping-store-linux-amd64'
+							./ShoppingStoreApp/shopping-store-linux-amd64 &
+						'''
+					}
 				}
 			}
 		}
@@ -108,7 +114,7 @@ pipeline {
 		stage('Run tests') {
       steps {
 				script {
-					dir('tests') {
+					dir("${env.WORKSPACE}/tests") {
 						def selectedProjects = params.PROJECTS.split(',').collect { it.trim() }
 						def projectsArgument = selectedProjects.collect { "'${it}'" }.join(' ')
 						def testCommand = 'npx playwright test'
@@ -128,10 +134,7 @@ pipeline {
 
 						testCommand += " --workers=${params.WORKERS} --project ${projectsArgument}"
 
-						sh '''
-						
-						pwd
-						'''
+						sh 'pwd'
 						try {
 							sh testCommand
 						} catch (Exception e) {
@@ -145,11 +148,13 @@ pipeline {
 
 		stage('Generate allure results') {
       steps {
-				allure([
-					includeProperties: false,
-					jdk: '',
-					results: [[path: 'allure-results']]
-				])
+				dir("${env.WORKSPACE}") {
+					allure([
+						includeProperties: false,
+						jdk: '',
+						results: [[path: 'allure-results']]
+					])
+				}
 			}
     }
 	}
