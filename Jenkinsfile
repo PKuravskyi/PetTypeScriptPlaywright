@@ -108,7 +108,7 @@ pipeline {
 		stage('Run tests') {
       steps {
 				script {
-					
+					dir("${env.WORKSPACE}/tests")
 					def selectedProjects = params.PROJECTS.split(',').collect { it.trim() }
 					def projectsArgument = selectedProjects.collect { "'${it}'" }.join(' ')
 					def testCommand = 'npx playwright test'
@@ -129,12 +129,8 @@ pipeline {
 					testCommand += " --workers=${params.WORKERS} --project ${projectsArgument}"
 
 					sh 'ls -l'
-					sh 'cd tests'
+					sh 'cd test'
 					sh 'ls -l'
-					sh 'cd tests'
-					sh 'cd tests'
-					sh 'cd tests'
-					sh 'cd tests'
 					try {
 						sh testCommand
 					} catch (Exception e) {
