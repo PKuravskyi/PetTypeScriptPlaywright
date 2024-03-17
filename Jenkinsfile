@@ -24,7 +24,7 @@ pipeline {
 				quoteValue: true,
 				saveJSONParameterToFile: false,
 				type: 'PT_CHECKBOX',
-				value: 'chromium', 'firefox', 'webkit', 'Microsoft Edge', 'Mobile Chrome', 'Mobile Safari',
+				value: 'chromium, firefox, webkit, Microsoft Edge, Mobile Chrome, Mobile Safari',
 				visibleItemCount: 10
 		)	
 	}
