@@ -56,8 +56,8 @@ pipeline {
 				Examples:<br>
 				<div style='color:green'>
 				ui<br>
-				ui\\checkout.spec.ts<br>
-				ui\\my_account.spec.ts:11<br>
+				ui/checkout.spec.ts<br>
+				ui/my_account.spec.ts:11<br>
 				</div>
 			''' )
 	}
@@ -113,8 +113,8 @@ pipeline {
 					def testCommand = 'npx playwright test'
 
 					if (params.TESTS_LIST) {
-						def testsList = params.TESTS_LIST.split('\n').collect { "tests\\${it.trim()}" }.join(' ')
-						testCommand += " ${testsList}"
+						def testsList = params.TESTS_LIST.split('\n').collect { it.trim().replace('\\', '/') }.join(' ')
+						testCommand += " tests/${testsList}"
           }
 
 					if (params.TAGS_TO_INCLUDE) {
@@ -128,8 +128,7 @@ pipeline {
 					testCommand += " --workers=${params.WORKERS} --project ${projectsArgument}"
 
 					try {
-						//sh testCommand
-						sh "npx playwright test tests/ui/checkout.spec.ts --project 'Google Chrome'"
+						sh testCommand
 					} catch (Exception e) {
 						echo "Caught exception: ${e.message}"
 						currentBuild.result = 'UNSTABLE'
