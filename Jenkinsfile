@@ -100,8 +100,17 @@ pipeline {
 					try {
 						def selectedProjects = params.PROJECTS.split(',').collect { it.trim() }
 						def projectsArgument = selectedProjects.collect { "'${it}'" }.join(' ')
+						def testCommand = "npx playwright test --workers=${params.WORKERS} --project ${projectsArgument}"
 
-						sh "npx playwright test --workers=${params.WORKERS} --project ${projectsArgument} --grep ${params.TAGS_TO_INCLUDE} --grep-invert ${params.TAGS_TO_EXCLUDE}"
+						if (params.TAGS_TO_INCLUDE) {
+								testCommand += " --grep ${params.TAGS_TO_INCLUDE}"
+						}
+
+						if (params.TAGS_TO_EXCLUDE) {
+								testCommand += " --grep-invert ${params.TAGS_TO_EXCLUDE}"
+						}
+
+						sh testCommand
 					} catch (Exception e) {
 						echo "Caught exception: ${e.message}"
 						currentBuild.result = 'UNSTABLE'
