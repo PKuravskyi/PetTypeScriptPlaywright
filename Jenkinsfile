@@ -30,7 +30,7 @@ pipeline {
 		extendedChoice(
 				name: 'PROJECTS',
 				defaultValue: 'Google Chrome, Mobile Chrome',
-				description: 'Playwright projects (browsers) to use. Please choose at least one.'
+				description: 'Playwright projects (browsers) to use. Please choose at least one.',
 				multiSelectDelimiter: ',',
 				saveJSONParameterToFile: false,
 				type: 'PT_CHECKBOX',
