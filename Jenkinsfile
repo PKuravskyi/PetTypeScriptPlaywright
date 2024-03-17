@@ -108,14 +108,13 @@ pipeline {
 		stage('Run tests') {
       steps {
 				script {
-					dir("${env.WORKSPACE}/tests") {
 					def selectedProjects = params.PROJECTS.split(',').collect { it.trim() }
 					def projectsArgument = selectedProjects.collect { "'${it}'" }.join(' ')
 					def testCommand = 'npx playwright test'
 
 					if (params.TESTS_LIST) {
 						def testsList = params.TESTS_LIST.split('\n').collect { it.trim() }.join(' ')
-						testCommand += " \"${testsList}\""
+						testCommand += " tests\"${testsList}\""
           }
 
 					if (params.TAGS_TO_INCLUDE) {
@@ -133,7 +132,6 @@ pipeline {
 					} catch (Exception e) {
 						echo "Caught exception: ${e.message}"
 						currentBuild.result = 'UNSTABLE'
-					}
 					}
 				}
 			}
