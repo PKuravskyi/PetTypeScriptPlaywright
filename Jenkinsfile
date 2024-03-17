@@ -128,7 +128,10 @@ pipeline {
 
 					testCommand += " --workers=${params.WORKERS} --project ${projectsArgument}"
 
-					echo "${env.WORKSPACE}"
+					
+					sh 'cd tests'
+					sh 'ls -l'
+					sh 'cd ../tests@tmp'
 					sh 'ls -l'
 					try {
 						sh testCommand
