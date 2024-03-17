@@ -114,7 +114,7 @@ pipeline {
 
 					if (params.TESTS_LIST) {
 						def testsList = params.TESTS_LIST.split('\n').collect { it.trim() }.join(' ')
-						testCommand += " ${testsList}"
+						testCommand += " \"${testsList}\""
           }
 
 					if (params.TAGS_TO_INCLUDE) {
