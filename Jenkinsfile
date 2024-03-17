@@ -17,7 +17,7 @@ pipeline {
 	parameters {
 		gitParameter(name: 'BRANCH', branchFilter: 'origin/(.*)', defaultValue: 'main', type: 'PT_BRANCH')
 		choice(name: 'WORKERS', choices: workers, description: 'Number of playwright workers. How many tests will be executed in parallel.')
-		extendedChoice(name: 'PROJECTS', defaultValue: 'chromium, Mobile Chrome', description: 'What playwright projects to use during run.', multiSelectDelimiter: ',', quoteValue: false, saveJSONParameterToFile: false, type: 'PT_CHECKBOX', value: projects, visibleItemCount: 10)
+		extendedChoice(name: 'PROJECTS', defaultValue: 'chromium, Mobile Chrome', description: 'Playwright projects (browsers) to use.', multiSelectDelimiter: ',', quoteValue: false, saveJSONParameterToFile: false, type: 'PT_CHECKBOX', value: projects, visibleItemCount: 10)
 	}
 
 	environment {
