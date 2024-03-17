@@ -37,6 +37,18 @@ pipeline {
 				value: 'Google Chrome, Microsoft Edge, Mobile Chrome, Mobile Safari',
 				visibleItemCount: 10
 		)
+
+		string(
+			name: 'TAGS_TO_INCLUDE',
+			description: 'Run tests that include specific tags.\nExample: @smoke @ui'
+			trim: true
+		)
+
+		string(
+			name: 'TAGS_TO_EXCLUDE',
+			description: 'Run tests that do not include specific tags.\nExample: @wip @flaky'
+			trim: true
+		)
 	}
 
 	environment {
@@ -89,7 +101,7 @@ pipeline {
 						def selectedProjects = params.PROJECTS.split(',').collect { it.trim() }
 						def projectsArgument = selectedProjects.collect { "'${it}'" }.join(' ')
 
-						sh "npx playwright test --workers=${params.WORKERS} --project ${projectsArgument}"
+						sh "npx playwright test --workers=${params.WORKERS} --project ${projectsArgument} --grep ${params.TAGS_TO_INCLUDE} --grep-invert ${params.TAGS_TO_EXCLUDE}"
 					} catch (Exception e) {
 						echo "Caught exception: ${e.message}"
 						currentBuild.result = 'UNSTABLE'
