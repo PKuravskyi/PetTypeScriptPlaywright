@@ -129,9 +129,7 @@ pipeline {
 					testCommand += " --workers=${params.WORKERS} --project ${projectsArgument}"
 
 					
-					sh 'cd tests'
-					sh 'ls -l'
-					sh 'cd ../tests@tmp'
+					sh 'cd tests@tmp'
 					sh 'ls -l'
 					try {
 						sh testCommand

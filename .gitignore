@@ -1,7 +1,7 @@
-node_modules/
+/node_modules
 /.env
 
 # reporters
-playwright-report/
-test-results/
-allure-results/
+/playwright-report
+/test-results
+/allure-results
