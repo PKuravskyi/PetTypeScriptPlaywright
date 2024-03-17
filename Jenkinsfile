@@ -1,7 +1,7 @@
 #!groovy
 
 List workers = ['5', '4', '3', '2', '1']
-List projects = 'chromium, firefox, webkit, Microsoft Edge, Mobile Chrome, Mobile Safari'
+String projects = 'chromium, firefox, webkit, Microsoft Edge, Mobile Chrome, Mobile Safari'
 
 pipeline {
 	agent any
