@@ -66,6 +66,7 @@ pipeline {
 					sh '''
 					npm ci
 					npx playwright install --with-deps
+					npx playwright install chrome
 					'''
 			}
     }
