@@ -110,6 +110,8 @@ pipeline {
 
 	post {
 		always {
+			sh "rm -rf allure-results"
+
 			// Send email to requestor
 			emailext(recipientProviders: [requestor()],
 			subject: "${currentBuild.projectName} - Build # ${currentBuild.id} - ${currentBuild.result}!",
