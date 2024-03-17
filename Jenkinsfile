@@ -46,7 +46,7 @@ pipeline {
 
 		string(
 			name: 'TAGS_TO_EXCLUDE',
-			description: 'Run tests that do not include specific tags.\nExample: @wip @flaky',
+			description: 'Run tests that do not include specific tags.<br>Example: @wip @flaky',
 			trim: true
 		)
 
