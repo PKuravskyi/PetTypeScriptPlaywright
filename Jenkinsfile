@@ -42,14 +42,13 @@ pipeline {
 	environment {
     ADMIN_USERNAME = credentials('admin-username')
     ADMIN_PASSWORD = credentials('admin-password')
-		SELECTED_PROJECTS = params.PROJECTS.split(',').collect { it.trim() }
   }
 
 	stages {
 		stage('Validate Parameters') {
 			steps {
 				script {
-					if (env.SELECTED_PROJECTS.empty) {
+					if (params.PROJECTS.trim() == '') {
 							error "No projects selected. Please choose at least one project."
 					}
 				}
