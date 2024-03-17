@@ -1,7 +1,7 @@
 #!groovy
 
 List workers = ['5', '4', '3', '2', '1']
-String projects = 'chromium, firefox, webkit, Microsoft Edge, Mobile Chrome, Mobile Safari'
+List projects = ['chromium', 'firefox', 'webkit', 'Microsoft Edge', 'Mobile Chrome', 'Mobile Safari']
 
 pipeline {
 	agent any
@@ -17,7 +17,17 @@ pipeline {
 	parameters {
 		gitParameter(name: 'BRANCH', branchFilter: 'origin/(.*)', defaultValue: 'main', type: 'PT_BRANCH')
 		choice(name: 'WORKERS', choices: workers, description: 'Number of playwright workers. How many tests will be executed in parallel.')
-		extendedChoice(name: 'PROJECTS', defaultValue: 'chromium, Mobile Chrome', description: 'Playwright projects (browsers) to use.', multiSelectDelimiter: ',', quoteValue: false, saveJSONParameterToFile: false, type: 'PT_CHECKBOX', value: projects, visibleItemCount: 10)
+		extendedChoice(
+				name: 'PROJECTS',
+				defaultValue: '',
+				description: 'Playwright projects (browsers) to use.',
+				multiSelectDelimiter: '',
+				quoteValue: true,
+				saveJSONParameterToFile: false,
+				type: 'PT_CHECKBOX',
+				value: projects.join(','),
+				visibleItemCount: 10
+		)	
 	}
 
 	environment {
