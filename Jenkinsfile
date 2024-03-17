@@ -108,6 +108,7 @@ pipeline {
 		stage('Run tests') {
       steps {
 				script {
+					
 					def selectedProjects = params.PROJECTS.split(',').collect { it.trim() }
 					def projectsArgument = selectedProjects.collect { "'${it}'" }.join(' ')
 					def testCommand = 'npx playwright test'
@@ -127,6 +128,7 @@ pipeline {
 
 					testCommand += " --workers=${params.WORKERS} --project ${projectsArgument}"
 
+					sh 'pwd'
 					try {
 						sh testCommand
 					} catch (Exception e) {
