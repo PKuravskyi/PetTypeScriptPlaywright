@@ -52,8 +52,8 @@ pipeline {
 
 		text(
 			name: 'TESTS_LIST',
-			description: '''List of tests to run. You can specify folder with tests, one test file, or one specific test from suite.<br>
-				Each item should begin on new line. Examples:<br>
+			description: '''List of tests to run. You can specify folder with tests, one test file, or one specific test from suite. Each item should begin on new line.<br>
+				Examples:<br>
 				<div style='color:green'>
 				ui<br>
 				ui\\checkout.spec.ts<br>
