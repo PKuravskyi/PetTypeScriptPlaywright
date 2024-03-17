@@ -128,9 +128,6 @@ pipeline {
 
 					testCommand += " --workers=${params.WORKERS} --project ${projectsArgument}"
 
-					sh 'ls -l'
-					sh 'cd test'
-					sh 'ls -l'
 					try {
 						sh testCommand
 					} catch (Exception e) {
