@@ -14,12 +14,23 @@ pipeline {
 	}
 
 	parameters {
-		gitParameter(name: 'BRANCH', branchFilter: 'origin/(.*)', defaultValue: 'main', type: 'PT_BRANCH')
-		choice(name: 'WORKERS', choices: workers, description: 'Number of playwright workers. How many tests will be executed in parallel.')
+		gitParameter(
+			name: 'BRANCH',
+			branchFilter: 'origin/(.*)',
+			defaultValue: 'main',
+			type: 'PT_BRANCH'
+		)
+
+		choice(
+			name: 'WORKERS',
+			choices: workers, 
+			description: 'Number of playwright workers. How many tests will be executed in parallel.'
+		)
+
 		extendedChoice(
 				name: 'PROJECTS',
-				defaultValue: null,
-				description: 'Playwright projects (browsers) to use.',
+				defaultValue: 'chromium, Mobile Chrome',
+				description: 'Playwright projects (browsers) to use. Please choose at least one.',
 				multiSelectDelimiter: ',',
 				saveJSONParameterToFile: false,
 				type: 'PT_CHECKBOX',
@@ -31,9 +42,20 @@ pipeline {
 	environment {
     ADMIN_USERNAME = credentials('admin-username')
     ADMIN_PASSWORD = credentials('admin-password')
+		SELECTED_PROJECTS = params.PROJECTS.split(',').collect { it.trim() }
   }
 
 	stages {
+		stage('Validate Parameters') {
+			steps {
+				script {
+					if (SELECTED_PROJECTS.empty) {
+							error "No projects selected. Please choose at least one project."
+					}
+				}
+			}
+		}
+
 		stage('Clone repository') {
 			steps {
         git branch: "${params.BRANCH}", url: 'https://github.com/PKuravskyi/PetTypeScriptPlaywright.git'
@@ -64,14 +86,7 @@ pipeline {
       steps {
 				script {
 					try {
-						def selectedProjects = params.PROJECTS.split(',').collect { it.trim() }
-
-						if (selectedProjects.empty) {
-              error "No projects selected. Please choose at least one project."
-            }
-						
-						def projectsArgument = selectedProjects.collect { "'${it}'" }.join(' ')
-
+						def projectsArgument = SELECTED_PROJECTS.collect { "'${it}'" }.join(' ')
 						sh "npx playwright test --workers=${params.WORKERS} --project ${projectsArgument}"
 					} catch (Exception e) {
 						echo "Caught exception: ${e.message}"
