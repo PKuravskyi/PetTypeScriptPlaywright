@@ -1,6 +1,7 @@
 #!groovy
 
 List workers = ['5', '4', '3', '2', '1']
+List projects = ['chromium, firefox, webkit, Microsoft Edge, Mobile Chrome, Mobile Safari']
 
 pipeline {
 	agent any
@@ -14,8 +15,9 @@ pipeline {
 	}
 
 	parameters {
-		gitParameter branchFilter: 'origin/(.*)', defaultValue: 'main', name: 'BRANCH', type: 'PT_BRANCH'
+		gitParameter(name: 'BRANCH', branchFilter: 'origin/(.*)', defaultValue: 'main', type: 'PT_BRANCH')
 		choice(name: 'WORKERS', choices: workers, description: 'Number of playwright workers. How many tests will be executed in parallel.')
+		extendedChoice(name: 'PROJECTS', defaultValue: 'chromium, Mobile Chrome', description: 'What playwright projects to use during run.', multiSelectDelimiter: ',', quoteValue: false, saveJSONParameterToFile: false, type: 'PT_CHECKBOX', value: projects, visibleItemCount: 10)
 	}
 
 	environment {
@@ -54,7 +56,10 @@ pipeline {
       steps {
 				script {
 					try {
-						sh "npx playwright test --workers=${params.WORKERS}"
+						def selectedProjects = params.PROJECTS.split(',').collect { it.trim() }
+						def projectsArgument = selectedProjects.collect { "'${it}'" }.join(' ')
+
+						sh "npx playwright test --workers=${params.WORKERS} --project ${projectsArgument}"
 					} catch (Exception e) {
 						echo "Caught exception: ${e.message}"
 						currentBuild.result = 'UNSTABLE'
