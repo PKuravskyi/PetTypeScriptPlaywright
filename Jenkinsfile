@@ -57,6 +57,11 @@ pipeline {
 				script {
 					try {
 						def selectedProjects = params.PROJECTS.split(',').collect { it.trim() }
+
+						if (selectedProjects.empty) {
+              error "No projects selected. Please choose at least one project."
+            }
+						
 						def projectsArgument = selectedProjects.collect { "'${it}'" }.join(' ')
 
 						sh "npx playwright test --workers=${params.WORKERS} --project ${projectsArgument}"
