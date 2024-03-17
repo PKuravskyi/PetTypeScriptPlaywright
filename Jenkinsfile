@@ -150,7 +150,9 @@ pipeline {
 
 	post {
 		always {
-			sh "rm -rf allure-results"
+			if (fileExists('allure-results')) {
+				sh 'rm -rf allure-results'
+			}
 
 			// Send email to requestor
 			emailext(recipientProviders: [requestor()],
