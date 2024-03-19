@@ -21,12 +21,6 @@ pipeline {
 			type: 'PT_BRANCH'
 		)
 
-		choice(
-			name: 'WORKERS',
-			choices: workers, 
-			description: 'Number of playwright workers. How many tests will be executed in parallel.'
-		)
-
 		extendedChoice(
 				name: 'PROJECTS',
 				defaultValue: 'Google Chrome, Mobile Chrome',
@@ -60,6 +54,12 @@ pipeline {
 				ui/my_account.spec.ts:11<br>
 				</div>
 			''' )
+
+		choice(
+			name: 'WORKERS',
+			choices: workers, 
+			description: 'Number of playwright workers. How many tests will be executed in parallel.'
+		)
 	}
 
 	environment {

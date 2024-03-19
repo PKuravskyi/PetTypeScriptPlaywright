@@ -1,9 +1,7 @@
 Accessibility tests
 API tests
-Add tags for tests
 Try to use Cucumber
 Add snapshots matching tests
-Add scripts to run different test suites locally & helper scripts for running tests
 Add logger
 Add ESlint
 Add test coverage
