@@ -17,6 +17,7 @@ jobs:
         run: |
           npm ci
           npx playwright install chrome
+          npx playwright install msedge
 
       - name: Run tests
         run: |
