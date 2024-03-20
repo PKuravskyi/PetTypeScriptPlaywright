@@ -1,4 +1,4 @@
-import * as base from '@playwright/test';
+import { test as baseTest } from '@playwright/test';
 import { ArtsPage } from './ArtsPage';
 import { BasketPage } from './BasketPage';
 import { LoginPage } from './LoginPage';
@@ -19,7 +19,7 @@ type Fixtures = {
 	thankYouPage: ThankYouPage;
 };
 
-export const test = base.test.extend<Fixtures>({
+export const test = baseTest.extend<Fixtures>({
 	artsPage: async ({ page }, use) => {
 		await use(new ArtsPage(page));
 	},

@@ -1,4 +1,4 @@
-import * as base from '@playwright/test';
+import { test as baseTest } from '@playwright/test';
 import { LoginEndpoint } from './LoginEndpoint';
 import { SignUpEndpoint } from './SignUpEndpoint';
 
@@ -7,7 +7,7 @@ type Fixtures = {
 	signUpEndpoint: SignUpEndpoint;
 };
 
-export const test = base.test.extend<Fixtures>({
+export const test = baseTest.extend<Fixtures>({
 	loginEndpoint: async ({ page }, use) => {
 		await use(new LoginEndpoint(page));
 	},
