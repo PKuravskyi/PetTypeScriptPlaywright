@@ -8,16 +8,16 @@ test.describe(
 	() => {
 		test.beforeEach(async ({ artsPage }) => await artsPage.visit());
 
-		test('Verify arts page visualisation (default sorting)', async ({ artsPage }) => {
+		test('Test3 Verify arts page visualisation (default sorting)', async ({ artsPage }) => {
 			await artsPage.verifyPageHasScreenshot()
 		});
 
-		test('Verify arts page visualisation (ascending sorting)', async ({ artsPage }) => {
+		test('Test3 Verify arts page visualisation (ascending sorting)', async ({ artsPage }) => {
 			await artsPage.sortBy('price-asc');
 			await artsPage.verifyPageHasScreenshot()
 		});
 
-		test('Test2 Verify arts page visualisation (descending sorting)', async ({ artsPage }) => {
+		test('Test3 Verify arts page visualisation (descending sorting)', async ({ artsPage }) => {
 			await artsPage.sortBy('price-desc');
 			await artsPage.verifyPageHasScreenshot()
 		});
