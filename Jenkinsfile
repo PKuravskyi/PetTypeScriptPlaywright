@@ -135,8 +135,13 @@ pipeline {
 					}
 
 					def junitReport = readFile('test-results/junit-results.xml')
-						failedTests = junitReport.readLines().findAll { it.contains('<testcase') && it.contains('failure') }
-                                    .collect { it.replaceAll('.*classname="([^"]+)".*name="([^"]+)".*', '$1.$2') }
+					def xml = new XmlSlurper().parseText(junitReport)
+          def failedTests = []
+
+					xml.testsuite.testcase.findAll { it.failure }.each { testCase ->
+                def className = testCase.@classname.text()
+                def testName = testCase.@name.text()
+                failedTests.add("$className.$testName")
 				echo "Failed tests: ${failedTests}"
 				}
 			}
