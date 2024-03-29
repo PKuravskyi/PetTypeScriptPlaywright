@@ -129,13 +129,30 @@ pipeline {
 
 					try {
 						sh testCommand
+
+						def junitReport = readFile('test-results/junit-results.xml')
+						failedTests = junitReport.readLines().findAll { it.contains('<testcase') && it.contains('failure') }
+                                    .collect { it.replaceAll('.*classname="([^"]+)".*name="([^"]+)".*', '$1.$2') }
+					} catch (Exception e) {
+						echo "Caught exception: ${e.message}"
+					}
+				}
+			}
+    }
+
+		stage('Rerun failed tests') {
+			when { expression { failedTests.size() > 0 } }
+			steps {
+				script {
+					try {
+						sh "npx playwright test --grep ${failedTests.join(' --grep ')} --workers=${params.WORKERS} --project ${projectsArgument}"
 					} catch (Exception e) {
 						echo "Caught exception: ${e.message}"
 						currentBuild.result = 'UNSTABLE'
 					}
 				}
 			}
-    }
+		}
 
 		stage('Generate allure results') {
       steps {
@@ -150,7 +167,10 @@ pipeline {
 
 	post {
 		always {
-			sh 'rm -rf allure-results'
+			sh '''
+				rm -rf allure-results
+				rm -rf test-results
+			'''
 
 			// Send email to requestor
 			emailext(recipientProviders: [requestor()],
