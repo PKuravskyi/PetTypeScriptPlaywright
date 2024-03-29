@@ -129,14 +129,15 @@ pipeline {
 
 					try {
 						sh testCommand
-
-						def junitReport = readFile('test-results/junit-results.xml')
-						failedTests = junitReport.readLines().findAll { it.contains('<testcase') && it.contains('failure') }
-                                    .collect { it.replaceAll('.*classname="([^"]+)".*name="([^"]+)".*', '$1.$2') }
 					} catch (Exception e) {
 						echo "Caught exception: ${e.message}"
 						currentBuild.result = 'UNSTABLE'
 					}
+
+					def junitReport = readFile('test-results/junit-results.xml')
+						failedTests = junitReport.readLines().findAll { it.contains('<testcase') && it.contains('failure') }
+                                    .collect { it.replaceAll('.*classname="([^"]+)".*name="([^"]+)".*', '$1.$2') }
+				echo "Failed tests: ${failedTests}"
 				}
 			}
     }

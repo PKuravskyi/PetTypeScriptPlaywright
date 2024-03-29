@@ -17,7 +17,7 @@ test.describe(
 			await artsPage.verifyPageHasScreenshot()
 		});
 
-		test('Test Verify arts page visualisation (descending sorting)', async ({ artsPage }) => {
+		test('Test1 Verify arts page visualisation (descending sorting)', async ({ artsPage }) => {
 			await artsPage.sortBy('price-desc');
 			await artsPage.verifyPageHasScreenshot()
 		});
