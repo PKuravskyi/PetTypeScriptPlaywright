@@ -142,6 +142,7 @@ pipeline {
                 def className = testCase.@classname.text()
                 def testName = testCase.@name.text()
                 failedTests.add("$className.$testName")
+					}
 				echo "Failed tests: ${failedTests}"
 				}
 			}
