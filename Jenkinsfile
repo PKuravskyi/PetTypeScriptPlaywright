@@ -63,6 +63,7 @@ pipeline {
 	}
 
 	environment {
+		CI = true
     ADMIN_USERNAME = credentials('admin-username')
     ADMIN_PASSWORD = credentials('admin-password')
   }
