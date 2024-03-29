@@ -135,6 +135,7 @@ pipeline {
                                     .collect { it.replaceAll('.*classname="([^"]+)".*name="([^"]+)".*', '$1.$2') }
 					} catch (Exception e) {
 						echo "Caught exception: ${e.message}"
+						currentBuild.result = 'UNSTABLE'
 					}
 				}
 			}
