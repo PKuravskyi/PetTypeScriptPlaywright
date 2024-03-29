@@ -107,9 +107,9 @@ pipeline {
 		}
 
 		stage('Run tests') {
-			stageFlowFailureBehavior(failFast: false)
-
       steps {
+				stageFlowFailureBehavior(failFast: false)
+
 				script {
 					def selectedProjects = params.PROJECTS.split(',').collect { it.trim() }
 					def projectsArgument = selectedProjects.collect { "'${it}'" }.join(' ')
