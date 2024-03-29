@@ -9,7 +9,7 @@ pipeline {
 
 	options {
 		buildDiscarder(logRotator(daysToKeepStr: '30', artifactDaysToKeepStr: '14'))
-		timeout(time: 24, unit: 'HOURS')
+		timeout(time: 2, unit: 'HOURS')
 		skipDefaultCheckout(true)
 	}
 
@@ -107,6 +107,8 @@ pipeline {
 		}
 
 		stage('Run tests') {
+			stageFlowFailureBehavior(failFast: false)
+
       steps {
 				script {
 					def selectedProjects = params.PROJECTS.split(',').collect { it.trim() }
@@ -126,14 +128,14 @@ pipeline {
 						testCommand += " --grep-invert ${params.TAGS_TO_EXCLUDE}"
 					}
 
-					testCommand += " --workers=${params.WORKERS} --project ${projectsArgument} --retries=2"
+					testCommand += " --workers=${params.WORKERS} --project ${projectsArgument}"
 
-					try {
+					// try {
 						sh testCommand
-					} catch (Exception e) {
-						echo "Caught exception: ${e.message}"
-						currentBuild.result = 'UNSTABLE'
-					}
+					// } catch (Exception e) {
+					// 	echo "Caught exception: ${e.message}"
+					// 	currentBuild.result = 'UNSTABLE'
+					// }
 
 					def junitReport = readFile('test-results/junit-results.xml')
 					def xml = new XmlSlurper().parseText(junitReport)
