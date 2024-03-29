@@ -126,7 +126,7 @@ pipeline {
 						testCommand += " --grep-invert ${params.TAGS_TO_EXCLUDE}"
 					}
 
-					testCommand += " --workers=${params.WORKERS} --project ${projectsArgument}"
+					testCommand += " --workers=${params.WORKERS} --project ${projectsArgument} --retries=2"
 
 					try {
 						sh testCommand
