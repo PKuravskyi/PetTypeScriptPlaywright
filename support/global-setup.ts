@@ -1,14 +1,18 @@
 import { emptyDir } from 'fs-extra';
 import { join } from 'path';
 
-async function globalSetup() {
-	// Clean allure-results folder before each test run
+async function emptyDirectory(dirName: string) {
 	try {
-		await emptyDir(join(__dirname, '../allure-results'));
-		console.log('Successfully removed allure results folder.');
+		await emptyDir(join(__dirname, '../', dirName));
+		console.log(`Successfully emptied '${dirName}' folder.`);
 	} catch (error) {
-		console.error('Error cleaning allure results folder:', error);
+		throw new Error(`Failed to empty '${dirName}' folder: ${error.message}`);
 	}
+}
+
+async function globalSetup() {
+	await emptyDirectory('allure-results');
+	await emptyDirectory('test-results');
 }
 
 export default globalSetup;
