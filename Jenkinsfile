@@ -136,12 +136,15 @@ pipeline {
 
 					testCommand += " --workers=${params.WORKERS} --project ${projectsArgument}"
 
-					// try {
-						sh testCommand
-					// } catch (Exception e) {
-					// 	echo "Caught exception: ${e.message}"
-					// 	currentBuild.result = 'UNSTABLE'
-					// }
+					try {
+						def commandOutput = sh(
+							script: testCommand,
+							returnStdout: true
+						).trim()
+					} catch (Exception e) {
+						echo "Caught exception: ${e.message}\n${commandOutput}"
+						currentBuild.result = 'UNSTABLE'
+					}
 
 					def junitReport = readFile('test-results/junit-results.xml')
 					def xml = new XmlSlurper().parseText(junitReport)
