@@ -6,5 +6,5 @@ Add logger
 Add ESlint
 Add test coverage
 Fix email sending in Jenkins
-Add google chrome for playwright in docker container
-Rerun tests on failure
+Add browsers for playwright in docker container
+Rerun CI tests on failure
