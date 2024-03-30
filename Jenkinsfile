@@ -109,20 +109,14 @@ pipeline {
 		stage('Run tests') {
       steps {
 				script {
-					def selectedProjects = params.PROJECTS
-																.split(',')
-																.collect { it.trim() }
+					def selectedProjects = params.PROJECTS.split(',').collect { it.trim() }
 
-					def projectsArgument = selectedProjects.collect { "'${it}'" }
-																.join(' ')
+					def projectsArgument = selectedProjects.collect { "'${it}'" }.join(' ')
 
 					def testCommand = 'npx playwright test'
 
 					if (params.TESTS_LIST) {
-						def tests = params.TESTS_LIST
-												.split('\n')
-												.collect { it.trim().replace('\\', '/') }
-												.join(' ')
+						def tests = params.TESTS_LIST.split('\n').collect { it.trim().replace('\\', '/') }.join(' ')
 						testCommand += " tests/${tests}"
           }
 
