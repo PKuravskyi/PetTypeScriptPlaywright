@@ -147,7 +147,7 @@ pipeline {
 					}
 
 					def junitReport = readFile('test-results/junit-results.xml')
-					def xml = new XmlSlurper().parseText(junitReport)
+					def xml = new XmlParser().parseText(junitReport)
           def failedTests = []
 
 					xml.testsuite.testcase.findAll { it.failure }.each { testCase ->
