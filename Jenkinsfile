@@ -143,6 +143,7 @@ pipeline {
 					}
 
 					def junitReport = readFile('test-results/junit-results.xml')
+					echo "junitReport: ${junitReport}"
 					def failedTests = extractFailedTests(junitReport)
 
 					echo "Failed tests: ${failedTests}"
