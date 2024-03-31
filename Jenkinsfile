@@ -147,15 +147,9 @@ pipeline {
 					}
 
 					def junitReport = readFile('test-results/junit-results.xml')
-					def xml = new XmlParser().parseText(junitReport)
-          def failedTests = []
+					def failedTests = extractFailedTests(junitReport)
 
-					xml.testsuite.testcase.findAll { it.failure }.each { testCase ->
-                def className = testCase.@classname.text()
-                def testName = testCase.@name.text()
-                failedTests.add("$className.$testName")
-					}
-				echo "Failed tests: ${failedTests}"
+					echo "Failed tests: ${failedTests}"
 				}
 			}
     }
@@ -198,4 +192,15 @@ pipeline {
 			body: "${currentBuild.projectName} - Build # ${currentBuild.id} - ${currentBuild.result}: Check console output at ${currentBuild.absoluteUrl} to view the results.")
 		}
 	}
+}
+
+def extractFailedTests(junitReport) {
+    def failedTests = []
+    def testCasePattern = /<testcase.*?classname="(.*?)".*?name="(.*?)".*?<failure.*?<\/testcase>/s
+    junitReport.eachMatch(testCasePattern) { match ->
+        def className = match[1]
+        def testName = match[2]
+        failedTests.add("$className.$testName")
+    }
+    return failedTests
 }
