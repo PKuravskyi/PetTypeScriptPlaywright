@@ -190,14 +190,14 @@ pipeline {
 	}
 }
 
-def extractFailedTests(junitReport) {
+def extractFailedTests(xmlString) {
     def failedTests = []
-    def testCasePattern = /<testcase[^>]*classname="([^"]*)"[^>]*name="([^"]*)"[^>]*<\/testcase>/
-    def matcher = (junitReport =~ testCasePattern)
-    matcher.each { match ->
-        def className = match[1]
-        def testName = match[2]
-        failedTests.add("$className.$testName")
+    def pattern = /<testcase name="([^"]+)" classname="([^"]+)"[^>]*><failure/
+
+    (xmlString =~ pattern).each { match ->
+        def className = match[0][1].substring(0, match[0][1].lastIndexOf('.'))
+        failedTests.add(className)
     }
-    return failedTests
+
+    return failedTests.unique()
 }
