@@ -196,8 +196,9 @@ pipeline {
 
 def extractFailedTests(junitReport) {
     def failedTests = []
-    def testCasePattern = /<testcase.*?classname="(.*?)".*?name="(.*?)".*?<failure.*?<\/testcase>/s
-    junitReport.eachMatch(testCasePattern) { match ->
+    def testCasePattern = /<testcase[^>]*classname="([^"]*)"[^>]*name="([^"]*)"[^>]*<\/testcase>/
+    def matcher = (junitReport =~ testCasePattern)
+    matcher.each { match ->
         def className = match[1]
         def testName = match[2]
         failedTests.add("$className.$testName")
