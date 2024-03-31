@@ -137,12 +137,8 @@ pipeline {
 					testCommand += " --workers=${params.WORKERS} --project ${projectsArgument}"
 
 					try {
-						def commandOutput = sh(
-							script: testCommand,
-							returnStdout: true
-						).trim()
+						sh testCommand
 					} catch (Exception e) {
-						echo "Caught exception: ${e.message}\n${commandOutput}"
 						currentBuild.result = 'UNSTABLE'
 					}
 
