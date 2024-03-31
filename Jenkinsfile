@@ -193,10 +193,12 @@ pipeline {
 
 def extractFailedTests(xmlString) {
     def failedTests = []
-    def pattern = /<testcase name="([^"]+)" classname="([^"]+)"[^>]*><failure/
+    def pattern = /<testcase name="[^"]+" classname="([^"]+)"[^>]*><failure/
 
-    (xmlString =~ pattern).each { match ->
-        def className = match[0][1].substring(0, match[0][1].lastIndexOf('.'))
+    def matcher = (xmlString =~ pattern)
+
+    matcher.each { match ->
+        def className = match[0][1].substring(match[0][1].lastIndexOf('/') + 1)
         failedTests.add(className)
     }
 
