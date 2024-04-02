@@ -152,6 +152,8 @@ pipeline {
     }
 
 		stage('Rerun failed tests') {
+			echo "failedTests.size()"
+			echo "failedTests.size() > 0"
 			when { expression { failedTests.size() > 0 } }
 			steps {
 				script {
