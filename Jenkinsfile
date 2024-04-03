@@ -86,10 +86,12 @@ pipeline {
 		}
 
 		stage('Prepare data') {
-			sh '''
-				rm -rf allure-results
-				rm -rf test-results
-			'''
+			steps {
+				sh '''
+					rm -rf allure-results
+					rm -rf test-results
+				'''
+			}
 		}
 
 		stage('Install dependencies') {
@@ -104,12 +106,10 @@ pipeline {
 
 		stage('Start Shopping Store App') {
 			steps {
-				script {
-					sh '''
-						chmod +x './ShoppingStoreApp/shopping-store-linux-amd64'
-						./ShoppingStoreApp/shopping-store-linux-amd64 &
-					'''
-				}
+				sh '''
+					chmod +x './ShoppingStoreApp/shopping-store-linux-amd64'
+					./ShoppingStoreApp/shopping-store-linux-amd64 &
+				'''
 			}
 		}
 
