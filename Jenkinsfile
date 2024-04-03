@@ -200,16 +200,13 @@ pipeline {
 
 def extractFailedTests(xmlString) {
     def failedTests = []
-    def pattern = /<testcase name="[^"]+" classname="([^"]+)"[^>]*><failure/
-
-    def matcher = (xmlString =~ pattern)
-
-    matcher.each { match ->
-        def className = match[0][1].substring(match[0][1].lastIndexOf('/') + 1)
-        failedTests.add(className)
-    }
-
-    return failedTests.unique()
+    def suiteName = xmlString =~ /(?<=testsuite name=")\w+\\/
+		def scenarioNames = xmlString =~ /failure message="([^\s]+)/
+		scenarioNames.each { scenarioName ->
+			failedTests.add("${suiteName}${scenarioName[1]}")
+		}
+    
+    return failedTests
 }
 
 def sendEmailToRequestor() {
