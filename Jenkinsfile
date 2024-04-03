@@ -160,7 +160,7 @@ pipeline {
     }
 
 		stage('Rerun failed tests') {
-			when { expression { failedTests.size() > 0 } }
+			when { expression { return failedTests.size() > 0 } }
 			steps {
 				script {
 					try {
