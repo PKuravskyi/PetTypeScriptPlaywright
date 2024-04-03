@@ -1,6 +1,7 @@
 #!groovy
 
 List workers = ['5', '4', '3', '2', '1']
+def failedTests = []
 
 pipeline {
 	agent any
@@ -151,7 +152,7 @@ pipeline {
 
 					def junitReport = readFile('test-results/junit-results.xml')
 					echo "junitReport: ${junitReport}"
-					def failedTests = extractFailedTests(junitReport)
+					failedTests = extractFailedTests(junitReport)
 
 					echo "Failed tests: ${failedTests}"
 					echo "Failed tests size: ${failedTests.size()}"
@@ -160,7 +161,7 @@ pipeline {
     }
 
 		stage('Rerun failed tests') {
-			when { expression { return failedTests.size() > 0 } }
+			when { expression { failedTests.size() > 0 } }
 			steps {
 				script {
 					try {
