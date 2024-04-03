@@ -85,6 +85,13 @@ pipeline {
 			}
 		}
 
+		stage('Prepare data') {
+			sh '''
+				rm -rf allure-results
+				rm -rf test-results
+			'''
+		}
+
 		stage('Install dependencies') {
 			steps {
 					sh '''
@@ -178,16 +185,14 @@ pipeline {
 	}
 
 	post {
-		always {
-			sh '''
-				rm -rf allure-results
-				rm -rf test-results
-			'''
-
-			// Send email to requestor
-			emailext(recipientProviders: [requestor()],
-			subject: "${currentBuild.projectName} - Build # ${currentBuild.id} - ${currentBuild.result}!",
-			body: "${currentBuild.projectName} - Build # ${currentBuild.id} - ${currentBuild.result}: Check console output at ${currentBuild.absoluteUrl} to view the results.")
+		success {
+			sendEmailToRequestor()
+		}
+		unstable {
+			sendEmailToRequestor()
+		}
+		failure {
+			sendEmailToRequestor()
 		}
 	}
 }
@@ -204,4 +209,10 @@ def extractFailedTests(xmlString) {
     }
 
     return failedTests.unique()
+}
+
+def sendEmailToRequestor() {
+		emailext(recipientProviders: [requestor()],
+		subject: "${currentBuild.projectName} - Build # ${currentBuild.id} - ${currentBuild.result}!",
+		body: "${currentBuild.projectName} - Build # ${currentBuild.id} - ${currentBuild.result}: Check console output at ${currentBuild.absoluteUrl} to view the results.")
 }
