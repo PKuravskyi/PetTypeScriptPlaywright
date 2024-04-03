@@ -146,7 +146,9 @@ pipeline {
 
                     try {
                         sh testCommand
-                    } catch (Exception e) {
+                        } catch (PlaywrightError e) {
+                        currentBuild.result = 'UNSTABLE'
+                        } catch (Exception e) {
                         currentBuild.result = 'UNSTABLE'
                     }
 
