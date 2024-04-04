@@ -20,6 +20,7 @@
 		"allure-playwright": "^2.14.1",
 		"axios": "^1.6.7",
 		"dotenv": "^16.4.5",
-		"fs-extra": "^11.2.0"
+		"fs-extra": "^11.2.0",
+		"playwright-json-summary-reporter": "^1.0.1"
 	}
 }

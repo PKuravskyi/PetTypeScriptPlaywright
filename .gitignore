@@ -1,7 +1,11 @@
 /node_modules
 /.env
 
+# playwright
+tests/**/*.png
+
 # reporters
 /playwright-report
 /test-results
 /allure-results
+summary.json

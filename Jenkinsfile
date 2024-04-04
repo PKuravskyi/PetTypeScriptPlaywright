@@ -98,10 +98,10 @@ pipeline {
         stage('Install dependencies') {
             steps {
                 sh '''
-                  npm ci
-                  npx playwright install --with-deps
-                  npx playwright install chrome
-                  '''
+                npm ci
+                npx playwright install --with-deps
+                npx playwright install chrome
+                '''
             }
         }
 
@@ -123,9 +123,9 @@ pipeline {
 
                     if (params.TESTS_LIST) {
                         def tests = params.TESTS_LIST
-                                          .split('\n')
-                                          .collect { it.trim().replace('\\', '/') }
-                                          .join(' ')
+                                        .split('\n')
+                                        .collect { it.trim().replace('\\', '/') }
+                                        .join(' ')
                         testCommand += " tests/${tests}"
                     }
 
@@ -145,9 +145,9 @@ pipeline {
                         currentBuild.result = 'UNSTABLE'
                     }
 
-                    def junitReport = readFile('test-results/junit-results.xml')
-                    echo "junit Report: ${junitReport}"
-                    failedTests = extractFailedTests(junitReport)
+                    def testResults = readJSON file: 'summary.json'
+                    echo "testResults: ${testResults}"
+                    failedTests = testResults.failed.join(' ')
 
                     echo "Failed tests: ${failedTests}"
                 }
@@ -199,29 +199,29 @@ def getSelectedProjects() {
                                     .collect { it.trim() }
 
     def projects = selectedProjects.collect { "'${it}'" }
-                                   .join(' ')
+                                .join(' ')
 
     return projects
 }
 
-def extractFailedTests(xmlString) {
-    def failedTests = []
-    def suiteNamePattern = xmlString =~ /(?<=testsuite name=")\w+/
-    def suiteName = suiteNamePattern.find() ? suiteNamePattern.group() : null
+// def extractFailedTests(xmlString) {
+//     def failedTests = []
+//     def suiteNamePattern = xmlString =~ /(?<=testsuite name=")\w+/
+//     def suiteName = suiteNamePattern.find() ? suiteNamePattern.group() : null
 
-    def failedScenarioNames = xmlString =~ /(?<=failure message=")(.*?)(?= )/
+//     def failedScenarioNames = xmlString =~ /(?<=failure message=")(.*?)(?= )/
 
 
-    failedScenarioNames.each { scenarioName ->
-        failedTests.add("${suiteName}/${scenarioName[0]}")
-    }
+//     failedScenarioNames.each { scenarioName ->
+//         failedTests.add("${suiteName}/${scenarioName[0]}")
+//     }
 
-    if (failedTests.size() < 1) {
-        return []
-    } else {
-        return failedTests
-    }
-}
+//     if (failedTests.size() < 1) {
+//         return []
+//     } else {
+//         return failedTests
+//     }
+// }
 
 def sendEmailToRequestor() {
     emailext(recipientProviders: [requestor()],
