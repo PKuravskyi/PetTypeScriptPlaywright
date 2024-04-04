@@ -8,7 +8,7 @@ test.describe(
 	() => {
 		test.beforeEach(async ({ artsPage }) => await artsPage.visit());
 
-		test('4Verify arts page visualisation (default sorting)', async ({
+		test('Verify arts page visualisation (default sorting)', async ({
 			artsPage,
 		}) => {
 			await artsPage.verifyPageHasScreenshot();
@@ -21,7 +21,7 @@ test.describe(
 			await artsPage.verifyPageHasScreenshot();
 		});
 
-		test('4Verify arts page visualisation (descending sorting)', async ({
+		test('Verify arts page visualisation (descending sorting)', async ({
 			artsPage,
 		}) => {
 			await artsPage.sortBy('price-desc');
