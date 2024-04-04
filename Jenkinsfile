@@ -146,6 +146,7 @@ pipeline {
                     }
 
                     def junitReport = readFile('test-results/junit-results.xml')
+                    echo "junit Report: ${junitReport}"
                     failedTests = extractFailedTests(junitReport)
 
                     echo "Failed tests: ${failedTests}"
@@ -213,7 +214,6 @@ def extractFailedTests(xmlString) {
 
     failedScenarioNames.each { scenarioName ->
         failedTests.add("${suiteName}/${scenarioName[0]}")
-        echo "${failedTests}"
     }
 
     if (failedTests.size() < 1) {
