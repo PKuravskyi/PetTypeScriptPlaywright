@@ -203,7 +203,7 @@ def extractFailedTests(xmlString) {
     def failedTests = []
     def suiteNamePattern = xmlString =~ /(?<=testsuite name=")\w+/
     def suiteName = suiteNamePattern.find() ? suiteNamePattern.group() : null
-    def failedScenarioNamesPattern = xmlString =~ /(?<=failure message=")(.*?)(?= )/
+    def failedScenarioNames = xmlString =~ /(?<=failure message=")(.*?)(?= )/
 
 
     failedScenarioNames.each { scenarioName ->
