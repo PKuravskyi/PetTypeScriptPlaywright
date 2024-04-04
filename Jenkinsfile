@@ -146,10 +146,9 @@ pipeline {
 
                     try {
                         sh testCommand
-                        } catch (PlaywrightError e) {
+                    } catch (error) {
                         currentBuild.result = 'UNSTABLE'
-                        } catch (Exception e) {
-                        currentBuild.result = 'UNSTABLE'
+                        echo '${error}'
                     }
 
                     def junitReport = readFile('test-results/junit-results.xml')
