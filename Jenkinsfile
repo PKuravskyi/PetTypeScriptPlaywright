@@ -145,11 +145,7 @@ pipeline {
                         currentBuild.result = 'UNSTABLE'
                     }
 
-                    def testResults = readJSON file: 'summary.json'
-                    echo "testResults: ${testResults}"
-                    echo "failed testResults: ${testResults.failed}"
-                    failedTests = testResults.failed
-
+                    failedTests = readJSON(file: 'summary.json').failed
                     echo "Failed tests: ${failedTests}"
                 }
             }
@@ -204,25 +200,6 @@ def getSelectedProjects() {
 
     return projects
 }
-
-// def extractFailedTests(xmlString) {
-//     def failedTests = []
-//     def suiteNamePattern = xmlString =~ /(?<=testsuite name=")\w+/
-//     def suiteName = suiteNamePattern.find() ? suiteNamePattern.group() : null
-
-//     def failedScenarioNames = xmlString =~ /(?<=failure message=")(.*?)(?= )/
-
-
-//     failedScenarioNames.each { scenarioName ->
-//         failedTests.add("${suiteName}/${scenarioName[0]}")
-//     }
-
-//     if (failedTests.size() < 1) {
-//         return []
-//     } else {
-//         return failedTests
-//     }
-// }
 
 def sendEmailToRequestor() {
     emailext(recipientProviders: [requestor()],
