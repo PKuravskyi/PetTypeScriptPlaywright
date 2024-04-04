@@ -148,7 +148,7 @@ pipeline {
                     def testResults = readJSON file: 'summary.json'
                     echo "testResults: ${testResults}"
                     echo "failed testResults: ${testResults.failed}"
-                    failedTests = testResults.failed.join(' ')
+                    failedTests = testResults.failed.toList().join(' ')
 
                     echo "Failed tests: ${failedTests}"
                 }
