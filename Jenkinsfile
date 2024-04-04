@@ -173,7 +173,7 @@ pipeline {
                                                            .join(' ')
 
                     try {
-                        sh "npx playwright test ${failedTests.join(' --grep ')} --workers=${params.WORKERS} --project ${projectsArgument}"
+                        sh "npx playwright test ${failedTests.join(' ')} --workers=${params.WORKERS} --project ${projectsArgument}"
                     } catch (Exception e) {
                         echo "Caught exception: ${e.message}"
                         currentBuild.result = 'UNSTABLE'
