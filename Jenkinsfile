@@ -145,7 +145,8 @@ pipeline {
                         currentBuild.result = 'UNSTABLE'
                     }
 
-                    failedTests = readJSON(file: 'summary.json').failed
+                    def testResults = readJSON file: 'summary.json'
+                    failedTests = testResults.failed
                     echo "Failed tests: ${failedTests}"
                 }
             }
