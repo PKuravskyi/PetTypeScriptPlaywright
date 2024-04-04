@@ -117,12 +117,7 @@ pipeline {
         stage('Run tests') {
             steps {
                 script {
-                    def selectedProjects = params.PROJECTS
-                                                 .split(',')
-                                                 .collect { it.trim() }
-
-                    def projectsArgument = selectedProjects.collect { "'${it}'" }
-                                                           .join(' ')
+                    def projects = getSelectedProjects()
 
                     def testCommand = 'npx playwright test'
 
@@ -142,21 +137,18 @@ pipeline {
                         testCommand += " --grep-invert ${params.TAGS_TO_EXCLUDE}"
                     }
 
-                    testCommand += " --workers=${params.WORKERS} --project ${projectsArgument}"
+                    testCommand += " --workers=${params.WORKERS} --project ${projects}"
 
                     try {
                         sh testCommand
                     } catch (error) {
                         currentBuild.result = 'UNSTABLE'
-                        echo "${error}"
                     }
 
                     def junitReport = readFile('test-results/junit-results.xml')
-                    echo "junitReport: ${junitReport}"
                     failedTests = extractFailedTests(junitReport)
 
                     echo "Failed tests: ${failedTests}"
-                    echo "Failed tests size: ${failedTests.size()}"
                 }
             }
         }
@@ -165,17 +157,11 @@ pipeline {
             when { expression { failedTests.size() > 0 } }
             steps {
                 script {
-                    def selectedProjects = params.PROJECTS
-                                                 .split(',')
-                                                 .collect { it.trim() }
-
-                    def projectsArgument = selectedProjects.collect { "'${it}'" }
-                                                           .join(' ')
+                    def projects = getSelectedProjects()
 
                     try {
-                        sh "npx playwright test ${failedTests.join(' ')} --workers=${params.WORKERS} --project ${projectsArgument}"
-                    } catch (Exception e) {
-                        echo "Caught exception: ${e.message}"
+                        sh "npx playwright test ${failedTests.join(' ')} --workers=${params.WORKERS} --project ${projects}"
+                    } catch (error) {
                         currentBuild.result = 'UNSTABLE'
                     }
                 }
@@ -204,6 +190,17 @@ pipeline {
             sendEmailToRequestor()
         }
     }
+}
+
+def getSelectedProjects() {
+    def selectedProjects = params.PROJECTS
+                                    .split(',')
+                                    .collect { it.trim() }
+
+    def projects = selectedProjects.collect { "'${it}'" }
+                                   .join(' ')
+
+    return projects
 }
 
 def extractFailedTests(xmlString) {
