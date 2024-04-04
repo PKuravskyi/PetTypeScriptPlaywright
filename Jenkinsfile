@@ -173,7 +173,7 @@ pipeline {
                 allure([
                     includeProperties: false,
                     jdk: '',
-                    results: [[path: 'alure-results']]
+                    results: [[path: 'allure-results']]
                 ])
             }
         }
