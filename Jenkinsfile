@@ -201,14 +201,20 @@ pipeline {
 
 def extractFailedTests(xmlString) {
     def failedTests = []
-    def suiteName = xmlString.find(/(?<=testsuite name=")\w+/)
-    def failedScenarioNames = xmlString.findAll(/(?<=failure message=")(.*?)(?= )/)
+    def suiteNamePattern = xmlString =~ /(?<=testsuite name=")\w+/
+    def suiteName = suiteNamePattern.find() ? suiteNamePattern.group() : null
+    def failedScenarioNamesPattern = xmlString =~ /(?<=failure message=")(.*?)(?= )/
+
 
     failedScenarioNames.each { scenarioName ->
-        failedTests.add("${suiteName}/${failedScenarioNames[1]}")
+        failedTests.add("${suiteName}/${failedScenarioNames[0]}")
     }
 
-    return [suiteName, failedScenarioNames]
+    if (failedTests.size() < 1) {
+        return []
+    } else {
+        return [suiteName, failedScenarioNames]
+    }
 }
 
 def sendEmailToRequestor() {
