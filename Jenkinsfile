@@ -165,6 +165,13 @@ pipeline {
             when { expression { failedTests.size() > 0 } }
             steps {
                 script {
+                    def selectedProjects = params.PROJECTS
+                                                 .split(',')
+                                                 .collect { it.trim() }
+
+                    def projectsArgument = selectedProjects.collect { "'${it}'" }
+                                                           .join(' ')
+
                     try {
                         sh "npx playwright test --grep ${failedTests.join(' --grep ')} --workers=${params.WORKERS} --project ${projectsArgument}"
                     } catch (Exception e) {
