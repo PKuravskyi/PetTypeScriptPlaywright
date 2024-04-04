@@ -148,7 +148,7 @@ pipeline {
                         sh testCommand
                     } catch (error) {
                         currentBuild.result = 'UNSTABLE'
-                        echo '$error'
+                        echo "${error}"
                     }
 
                     def junitReport = readFile('test-results/junit-results.xml')
@@ -205,10 +205,10 @@ def extractFailedTests(xmlString) {
     def failedScenarioNames = xmlString =~ /(?<=failure message=")(.*?)(?= )/
 
     failedScenarioNames.each { scenarioName ->
-        failedTests.add("${suiteName}/${failedScenarioNames[0]}")
+        failedTests.add("${suiteName}/${failedScenarioNames[1]}")
     }
 
-    return failedTests
+    return [suiteName, failedScenarioNames]
 }
 
 def sendEmailToRequestor() {
