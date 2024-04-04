@@ -203,8 +203,9 @@ pipeline {
 def extractFailedTests(xmlString) {
     def failedTests = []
     def suiteName = xmlString =~ /(?<=testsuite name=")\w+/
+    def failedScenarioNames = xmlString =~ /(?<=failure message=")(.*?)(?= )/
 
-    xmlString =~ /(?<=failure message=")(.*?)(?= )/.each { scenarioName ->
+    failedScenarioNames.each { scenarioName ->
         failedTests.add("${suiteName}/${failedScenarioNames[1]}")
     }
 
