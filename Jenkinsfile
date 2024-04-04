@@ -148,7 +148,7 @@ pipeline {
                     def testResults = readJSON file: 'summary.json'
                     echo "testResults: ${testResults}"
                     echo "failed testResults: ${testResults.failed}"
-                    failedTests = testResults.failed.toList().join(' ')
+                    failedTests = testResults.failed
 
                     echo "Failed tests: ${failedTests}"
                 }
@@ -162,7 +162,7 @@ pipeline {
                     def projects = getSelectedProjects()
 
                     try {
-                        sh "npx playwright test ${failedTests.join(' ')} --workers=${params.WORKERS} --project ${projects}"
+                        sh "npx playwright test ${failedTests.toList().join(' ')} --workers=${params.WORKERS} --project ${projects}"
                     } catch (error) {
                         currentBuild.result = 'UNSTABLE'
                     }
