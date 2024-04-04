@@ -11,8 +11,10 @@ async function emptyDirectory(dirName: string) {
 }
 
 async function globalSetup() {
-	await emptyDirectory('allure-results');
-	await emptyDirectory('test-results');
+	if (!process.env.CI) {
+		await emptyDirectory('allure-results');
+		await emptyDirectory('test-results');
+	}
 }
 
 export default globalSetup;
