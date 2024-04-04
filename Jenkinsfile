@@ -215,7 +215,7 @@ def extractFailedTests(xmlString) {
     if (failedTests.size() < 1) {
         return []
     } else {
-        return [suiteName, failedScenarioNames]
+        return failedTests
     }
 }
 
