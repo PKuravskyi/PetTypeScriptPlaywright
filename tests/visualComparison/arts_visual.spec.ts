@@ -14,14 +14,14 @@ test.describe(
 			await artsPage.verifyPageHasScreenshot();
 		});
 
-		test('Test9 Verify arts page visualisation (ascending sorting)', async ({
+		test('Test10 Verify arts page visualisation (ascending sorting)', async ({
 			artsPage,
 		}) => {
 			await artsPage.sortBy('price-asc');
 			await artsPage.verifyPageHasScreenshot();
 		});
 
-		test('Test9 Verify arts page visualisation (descending sorting)', async ({
+		test('Test10 Verify arts page visualisation (descending sorting)', async ({
 			artsPage,
 		}) => {
 			await artsPage.sortBy('price-desc');
