@@ -8,7 +8,7 @@ test.describe(
 	() => {
 		test.beforeEach(async ({ artsPage }) => await artsPage.visit());
 
-		test('Test6 Verify arts page visualisation (default sorting)', async ({
+		test('Test7 Verify arts page visualisation (default sorting)', async ({
 			artsPage,
 		}) => {
 			await artsPage.verifyPageHasScreenshot();
