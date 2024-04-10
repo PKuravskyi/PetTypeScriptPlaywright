@@ -45,7 +45,7 @@ export class BasePage {
 		expect(await this.getBasketItemsCount()).toEqual(count);
 	}
 
-	async verifyPageHasScreenshot(options?: object) {
+	async verifyPageHasScreenshot(options?: object): Promise<void> {
 		await expect(this.page).toHaveScreenshot(options);
 	}
 }
