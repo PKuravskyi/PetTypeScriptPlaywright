@@ -1,4 +1,4 @@
-import { test as baseTest } from '@playwright/test';
+import { test as base } from '@playwright/test';
 import { ArtsPage } from './ArtsPage';
 import { BasketPage } from './BasketPage';
 import { LoginPage } from './LoginPage';
@@ -8,7 +8,7 @@ import { DeliveryDetailsPage } from './checkout/DeliveryDetailsPage';
 import { PaymentPage } from './checkout/PaymentPage';
 import { ThankYouPage } from './checkout/ThankYouPage';
 
-type Fixtures = {
+interface Pages {
 	artsPage: ArtsPage;
 	basketPage: BasketPage;
 	loginPage: LoginPage;
@@ -17,9 +17,9 @@ type Fixtures = {
 	deliveryDetailsPage: DeliveryDetailsPage;
 	paymentPage: PaymentPage;
 	thankYouPage: ThankYouPage;
-};
+}
 
-export const test = baseTest.extend<Fixtures>({
+export const test = base.extend<Pages>({
 	artsPage: async ({ page }, use) => {
 		await use(new ArtsPage(page));
 	},
@@ -52,3 +52,5 @@ export const test = baseTest.extend<Fixtures>({
 		await use(new ThankYouPage(page));
 	},
 });
+
+export const expect = test.expect;
