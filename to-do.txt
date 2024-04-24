@@ -1,8 +1,9 @@
 Accessibility tests
 API tests
 Try to use Cucumber
-Add logger
-Add ESlint
-Add test coverage
+Logger
+ESlint
+Test coverage
 Fix email sending in Jenkins
 Add browsers for playwright in docker container
+Mobile testing
