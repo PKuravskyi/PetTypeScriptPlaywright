@@ -7,3 +7,6 @@ Test coverage
 Fix email sending in Jenkins
 Add browsers for playwright in docker container
 Mobile testing
+Performance testing
+Load testing
+Security testing
