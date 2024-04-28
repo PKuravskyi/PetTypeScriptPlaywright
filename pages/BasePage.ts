@@ -1,4 +1,5 @@
 import { Page, Locator, expect } from '@playwright/test';
+import AxeBuilder from '@axe-core/playwright';
 
 export class BasePage {
 	readonly page: Page;
@@ -47,5 +48,14 @@ export class BasePage {
 
 	async verifyPageHasScreenshot(options?: object): Promise<void> {
 		await expect(this.page).toHaveScreenshot(options);
+	}
+
+	async verifyAccessibility(): Promise<void> {
+		const scanResults = await new AxeBuilder({
+			page: this.page,
+		})
+			.withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+			.analyze();
+		expect(scanResults.violations).toEqual([]);
 	}
 }
