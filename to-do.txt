@@ -1,4 +1,3 @@
-Accessibility tests
 API tests
 Try to use Cucumber
 Logger
