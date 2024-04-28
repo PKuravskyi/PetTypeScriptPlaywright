@@ -1,7 +1,7 @@
 {
 	"name": "pettypescriptplaywright",
 	"version": "1.0.0",
-	"description": "",
+	"description": "Pet project to practice testing with TypeScript and Playwright",
 	"main": "index.js",
 	"scripts": {
 		"test": "playwright test",
