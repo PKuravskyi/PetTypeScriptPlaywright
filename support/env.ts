@@ -5,3 +5,4 @@ import { test as pageFixtures } from '../pages/_pageFixtures';
 import { test as endpointFixtures } from '../services/endpoints/_endpointFixtures';
 
 export const test = mergeTests(pageFixtures, endpointFixtures);
+export const expect = test.expect;

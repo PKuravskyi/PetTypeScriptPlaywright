@@ -52,5 +52,3 @@ export const test = base.extend<Pages>({
 		await use(new ThankYouPage(page));
 	},
 });
-
-export const expect = test.expect;
