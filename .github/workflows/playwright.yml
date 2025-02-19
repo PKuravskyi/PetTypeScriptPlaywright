@@ -32,6 +32,7 @@ jobs:
           npm run test
 
       - name: Generate Allure Report
+        id: generate_allure
         if: success() || failure()
         run: |
           if [ -d "allure-results" ]; then
@@ -40,6 +41,7 @@ jobs:
           fi
 
       - name: Deploy Allure Report to GitHub Pages
+        if: success() && steps.generate_allure.outcome == 'success'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
