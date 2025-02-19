@@ -41,7 +41,7 @@ jobs:
           fi
 
       - name: Deploy Allure Report to GitHub Pages
-        if: success() && steps.generate_allure.outcome == 'success'
+        if: steps.generate_allure.outcome == 'success'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
