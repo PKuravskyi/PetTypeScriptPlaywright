@@ -14,5 +14,6 @@ export class ThankYouPage extends BaseCheckoutPage {
 
 	async verifySuccessfullPaymentMessage() {
 		await expect(this.thankYouLabel).toBeVisible();
+		throw new Error("Intentional failure for testing purposes!");
 	}
 }
