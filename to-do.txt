@@ -10,3 +10,4 @@ Performance testing
 Load testing
 Security testing
 Try GitLab
+Add code Quality Control (SonarQube, PMD, FindBugs, jsHint, FxCop, etc.)
