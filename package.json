@@ -5,7 +5,7 @@
 	"main": "index.js",
 	"scripts": {
 		"test": "playwright test --grep-invert \"@vc|@a11y\"",
-		"test:single": "playwright test ./tests/ui/my_account.spec.ts:6",
+		"test:single": "playwright test ./tests/ui/my_account.spec.ts:11",
 		"test:ui": "playwright test --ui",
 		"test:a11y": "playwright test --ui --grep @a11y",
 		"test:vc": "playwright test --grep @vc",
