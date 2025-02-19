@@ -1,4 +1,4 @@
-name: Playwrigth Tests
+name: Playwright Tests
 on: [push]
 jobs:
   test:
@@ -22,11 +22,18 @@ jobs:
       - name: Run tests
         run: |
           chmod +x './ShoppingStoreApp/shopping-store-linux-amd64'
-            ./ShoppingStoreApp/shopping-store-linux-amd64 &
+          ./ShoppingStoreApp/shopping-store-linux-amd64 &
           npm run test
-      - uses: actions/upload-artifact@v4
-        if: always()
+
+      - name: Generate Allure Report
+        run: |
+          npm install -g allure-commandline
+          allure generate allure-results --clean -o allure-report
+
+      - name: Deploy Allure Report to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          name: allure-results
-          path: allure-results/
-          retention-days: 30
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./allure-report
+          publish_branch: main
+          keep_files: false
