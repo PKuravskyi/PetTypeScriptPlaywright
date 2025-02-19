@@ -23,6 +23,7 @@ export default defineConfig({
 	reporter: [
 		['playwright-json-summary-reporter'],
 		['allure-playwright'],
+		['list']
 	],
 	/* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
 	use: {
