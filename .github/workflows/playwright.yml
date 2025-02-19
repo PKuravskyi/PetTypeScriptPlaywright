@@ -6,12 +6,18 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/playwright:v1.50.1-noble
-      env:
-        ADMIN_USERNAME: ${{ secrets.ADMIN_USERNAME }}
-        ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+    env:
+      ADMIN_USERNAME: ${{ secrets.ADMIN_USERNAME }}
+      ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+      JAVA_HOME: /usr/lib/jvm/java-11-openjdk-amd64
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Install Java
+        run: |
+          apt-get update
+          apt-get install -y openjdk-11-jdk
 
       - name: Install dependencies
         run: |
