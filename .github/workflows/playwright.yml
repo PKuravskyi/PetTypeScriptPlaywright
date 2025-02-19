@@ -33,7 +33,7 @@ jobs:
 
       - name: Generate Allure Report
         id: generate_allure
-        if: success() || failure()
+        if: always()
         run: |
           if [ -d "allure-results" ]; then
             npm install -g allure-commandline
@@ -41,7 +41,7 @@ jobs:
           fi
 
       - name: Deploy Allure Report to GitHub Pages
-        if: steps.generate_allure.outcome == 'success'
+        if: always() && hashFiles('allure-report/**') != ''
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
